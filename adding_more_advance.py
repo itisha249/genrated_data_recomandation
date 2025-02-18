@@ -46,198 +46,241 @@ def get_time_based_category():
         return ["general", "random"]
 
 # Multi-Language Filtering with Equal Distribution
+# def filter_language_recommendations(user_id, recommendations, total_recommendations=20):
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = str(user_row['languages'].values[0]).split(',') if not pd.isna(user_row['languages'].values[0]) else []
+#     user_languages = [lang.strip() for lang in user_languages if lang.strip()]
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'].str.strip() == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     # Fill extra slots with videos from any preferred language
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
+#         filtered_videos.append(extra_lang_videos)
+    
+#     final_videos = pd.concat(filtered_videos).drop_duplicates()
+    
+#     # If we still don't have enough, get exploration videos
+#     if len(final_videos) < total_recommendations:
+#         exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommend_score')
+#         exploration_videos['reason'] = 'Exploration'
+#         final_videos = pd.concat([final_videos, exploration_videos])
+    
+#         return final_videos.nlargest(total_recommendations, 'recommend_score')
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     # Fill extra slots with random videos from preferred languages
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42, replace=True)
+#         filtered_videos.append(extra_lang_videos)
+    
+#     final_videos = pd.concat(filtered_videos).drop_duplicates()
+    
+#     # If we still don't have enough, get exploration videos
+#     if len(final_videos) < total_recommendations:
+#         exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommendation_score')
+#         exploration_videos['reason'] = 'Exploration'
+#         final_videos = pd.concat([final_videos, exploration_videos])
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     # Fill extra slots with videos from any preferred language
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
+#         filtered_videos.append(extra_lang_videos)
+    
+#     final_videos = pd.concat(filtered_videos).drop_duplicates()
+    
+#     # If we still don't have enough, get exploration videos
+#     if len(final_videos) < total_recommendations:
+#         exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommendation_score')
+#         exploration_videos['reason'] = 'Exploration'
+#         final_videos = pd.concat([final_videos, exploration_videos])
+    
+#         return final_videos.nlargest(total_recommendations, 'recommendation_score')
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     # Fill extra slots with random videos from preferred languages
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
+#         filtered_videos.append(extra_lang_videos)
+    
+#         final_videos = pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
+#         return final_videos
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     # If there are extra slots, fill them randomly from available preferred languages
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42, replace=True)
+#         filtered_videos.append(extra_lang_videos)
+    
+#         final_videos = pd.concat(filtered_videos).drop_duplicates()
+#         return final_videos.nlargest(total_recommendations, 'recommend_score')
+#     user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42)
+#         filtered_videos.append(extra_lang_videos)
+    
+#         return pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
+#         user_row = user_data[user_data['user_id'] == user_id]
+#     if user_row.empty:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
+    
+#     if len(user_languages) == 0:
+#         return recommendations.nlargest(total_recommendations, 'recommend_score')
+    
+#     num_languages = len(user_languages)
+#     videos_per_language = total_recommendations // num_languages
+#     extra_videos = total_recommendations % num_languages
+    
+#     filtered_videos = []
+#     for lang in user_languages:
+#         lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
+#         filtered_videos.append(lang_videos)
+    
+#     if extra_videos > 0:
+#         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
+#         filtered_videos.append(extra_lang_videos)
+    
+#     return pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
+
 def filter_language_recommendations(user_id, recommendations, total_recommendations=20):
+    # Get user preferences
     user_row = user_data[user_data['user_id'] == user_id]
     if user_row.empty:
         return recommendations.nlargest(total_recommendations, 'recommend_score')
     
+    # Extract preferred languages
     user_languages = str(user_row['languages'].values[0]).split(',') if not pd.isna(user_row['languages'].values[0]) else []
     user_languages = [lang.strip() for lang in user_languages if lang.strip()]
     
-    if len(user_languages) == 0:
+    # If no languages, return top recommendations
+    if not user_languages:
         return recommendations.nlargest(total_recommendations, 'recommend_score')
     
+    # Calculate video slots per language
     num_languages = len(user_languages)
     videos_per_language = total_recommendations // num_languages
     extra_videos = total_recommendations % num_languages
-    
+
+    # Collect filtered videos per language
     filtered_videos = []
     for lang in user_languages:
         lang_videos = recommendations[recommendations['language'].str.strip() == lang].nlargest(videos_per_language, 'recommend_score')
         filtered_videos.append(lang_videos)
     
-    # Fill extra slots with videos from any preferred language
+    # Fill extra slots
     if extra_videos > 0:
         extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
         filtered_videos.append(extra_lang_videos)
     
+    # Combine and remove duplicates
     final_videos = pd.concat(filtered_videos).drop_duplicates()
-    
-    # If we still don't have enough, get exploration videos
+
+    # If not enough videos, add exploration videos
     if len(final_videos) < total_recommendations:
         exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommend_score')
         exploration_videos['reason'] = 'Exploration'
         final_videos = pd.concat([final_videos, exploration_videos])
-    
-        return final_videos.nlargest(total_recommendations, 'recommend_score')
-    user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    # Fill extra slots with random videos from preferred languages
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42, replace=True)
-        filtered_videos.append(extra_lang_videos)
-    
-    final_videos = pd.concat(filtered_videos).drop_duplicates()
-    
-    # If we still don't have enough, get exploration videos
-    if len(final_videos) < total_recommendations:
-        exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommendation_score')
-        exploration_videos['reason'] = 'Exploration'
-        final_videos = pd.concat([final_videos, exploration_videos])
-    user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    # Fill extra slots with videos from any preferred language
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
-        filtered_videos.append(extra_lang_videos)
-    
-    final_videos = pd.concat(filtered_videos).drop_duplicates()
-    
-    # If we still don't have enough, get exploration videos
-    if len(final_videos) < total_recommendations:
-        exploration_videos = video_data[~video_data['id'].isin(final_videos['id'])].nlargest(total_recommendations - len(final_videos), 'recommendation_score')
-        exploration_videos['reason'] = 'Exploration'
-        final_videos = pd.concat([final_videos, exploration_videos])
-    
-        return final_videos.nlargest(total_recommendations, 'recommendation_score')
-    user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    # Fill extra slots with random videos from preferred languages
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
-        filtered_videos.append(extra_lang_videos)
-    
-        final_videos = pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
-        return final_videos
-    user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    # If there are extra slots, fill them randomly from available preferred languages
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42, replace=True)
-        filtered_videos.append(extra_lang_videos)
-    
-        final_videos = pd.concat(filtered_videos).drop_duplicates()
-        return final_videos.nlargest(total_recommendations, 'recommend_score')
-    user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].sample(n=extra_videos, random_state=42)
-        filtered_videos.append(extra_lang_videos)
-    
-        return pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
-        user_row = user_data[user_data['user_id'] == user_id]
-    if user_row.empty:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    user_languages = list(set(str(user_row['languages'].values[0]).split(','))) if not pd.isna(user_row['languages'].values[0]) else []
-    
-    if len(user_languages) == 0:
-        return recommendations.nlargest(total_recommendations, 'recommend_score')
-    
-    num_languages = len(user_languages)
-    videos_per_language = total_recommendations // num_languages
-    extra_videos = total_recommendations % num_languages
-    
-    filtered_videos = []
-    for lang in user_languages:
-        lang_videos = recommendations[recommendations['language'] == lang].nlargest(videos_per_language, 'recommend_score')
-        filtered_videos.append(lang_videos)
-    
-    if extra_videos > 0:
-        extra_lang_videos = recommendations[recommendations['language'].isin(user_languages)].nlargest(extra_videos, 'recommend_score')
-        filtered_videos.append(extra_lang_videos)
-    
-    return pd.concat(filtered_videos).drop_duplicates().nlargest(total_recommendations, 'recommend_score')
+
+    # Return final recommendations
+    return final_videos.nlargest(total_recommendations, 'recommend_score')
+
 
 # Build Annoy Index for fast user similarity lookup
 if "annoy_index" not in st.session_state:
@@ -277,7 +320,6 @@ def get_similar_users(user_id, top_n=3):
     return user_data.iloc[similar_users_idx]['user_id'].tolist()
 
 # Hybrid Recommendation Function
-# 
 
 def get_recommendations(user_id):
     total_recommendations = 25  # Ensure a total of 25 recommendations
@@ -419,7 +461,7 @@ if st.button("Get Recommendations"):
         if not user_row.empty and 'languages' in user_row.columns and not pd.isna(user_row['languages'].values[0]):
             user_languages = str(user_row['languages'].values[0]).split(',')
             user_languages = [lang.strip() for lang in user_languages if lang.strip()]
-            trending_videos = video_data[video_data['language'].isin(user_languages)].nlargest(20, 'recommend_score')
+            trending_videos = video_data[video_data['language'].isin(user_languages)].nlargest(20,'recommend_score')
             trending_videos['reason'] = 'Trending in Preferred Language'
         else:
             trending_videos = video_data.nlargest(20, 'recommend_score')
